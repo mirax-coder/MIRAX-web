@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Signup UI</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #e9f0fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      width: 300px;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+      background: #fff;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95);
+      transition: all 0.4s ease;
+    }
+
+    .box.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .error {
+      font-size: 12px;
+      color: red;
+      margin-top: -5px;
+      margin-bottom: 8px;
+      display: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #0057ff;
+      color: white;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #0040c9;
+    }
+
+    .alt-option {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+    }
+
+    .alt-option a {
+      color: #0057ff;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .alt-option a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Box -->
+  <div class="box active" id="login-box">
+    <h2>LOGIN</h2>
+    <p>TO CONTINUE</p>
+    <input type="email" id="login-email" placeholder="someone@gmail.com">
+    <div class="error" id="login-email-error">Email is required</div>
+    <div class="error" id="login-email-format-error">Enter a valid email</div>
+
+    <input type="password" id="login-password" placeholder="Password">
+    <div class="error" id="login-password-error">Password is required</div>
+
+    <button onclick="validateLogin()">LOGIN</button>
+    <div class="alt-option">
+      Don’t have an account? <a onclick="showSignup()">Sign Up</a>
+    </div>
+  </div>
+
+  <!-- Signup Box -->
+  <div class="box" id="signup-box">
+    <h2>SIGN UP</h2>
+    <p>FOR YOUR ACCOUNT</p>
+    <input type="text" id="signup-username" placeholder="Username">
+    <div class="error" id="signup-username-error">Username is required</div>
+
+    <input type="email" id="signup-email" placeholder="someone@gmail.com">
+    <div class="error" id="signup-email-error">Email is required</div>
+    <div class="error" id="signup-email-format-error">Enter a valid email</div>
+
+    <input type="password" id="signup-password" placeholder="Password">
+    <div class="error" id="signup-password-error">Password is required</div>
+
+    <button onclick="validateSignup()">SIGN UP</button>
+    <div class="alt-option">
+      Already have an account? <a onclick="showLogin()">Login</a>
+    </div>
+  </div>
+
+  <script>
+    function showSignup() {
+      document.getElementById("login-box").classList.remove("active");
+      document.getElementById("signup-box").classList.add("active");
+    }
+
+    function showLogin() {
+      document.getElementById("signup-box").classList.remove("active");
+      document.getElementById("login-box").classList.add("active");
+    }
+
+    function isValidEmail(email) {
+      let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return pattern.test(email);
+    }
+
+    function validateLogin() {
+      let email = document.getElementById("login-email").value.trim();
+      let password = document.getElementById("login-password").value.trim();
+      let valid = true;
+
+      // Email required check
+      if (!email) {
+        document.getElementById("login-email-error").style.display = "block";
+        document.getElementById("login-email-format-error").style.display = "none";
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        document.getElementById("login-email-error").style.display = "none";
+        document.getElementById("login-email-format-error").style.display = "block";
+        valid = false;
+      } else {
+        document.getElementById("login-email-error").style.display = "none";
+        document.getElementById("login-email-format-error").style.display = "none";
+      }
+
+      // Password required check
+      if (!password) {
+        document.getElementById("login-password-error").style.display = "block";
+        valid = false;
+      } else {
+        document.getElementById("login-password-error").style.display = "none";
+      }
+
+      if (valid) {
+        alert("Login successful ✅ (demo)");
+      }
+    }
+
+    function validateSignup() {
+      let username = document.getElementById("signup-username").value.trim();
+      let email = document.getElementById("signup-email").value.trim();
+      let password = document.getElementById("signup-password").value.trim();
+      let valid = true;
+
+      // Username required check
+      if (!username) {
+        document.getElementById("signup-username-error").style.display = "block";
+        valid = false;
+      } else {
+        document.getElementById("signup-username-error").style.display = "none";
+      }
+
+      // Email required + format check
+      if (!email) {
+        document.getElementById("signup-email-error").style.display = "block";
+        document.getElementById("signup-email-format-error").style.display = "none";
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        document.getElementById("signup-email-error").style.display = "none";
+        document.getElementById("signup-email-format-error").style.display = "block";
+        valid = false;
+      } else {
+        document.getElementById("signup-email-error").style.display = "none";
+        document.getElementById("signup-email-format-error").style.display = "none";
+      }
+
+      // Password required check
+      if (!password) {
+        document.getElementById("signup-password-error").style.display = "block";
+        valid = false;
+      } else {
+        document.getElementById("signup-password-error").style.display = "none";
+      }
+
+      if (valid) {
+        alert("Signup successful 🎉 (demo)");
+      }
+    }
+  </script>
+</body>
+</html>
